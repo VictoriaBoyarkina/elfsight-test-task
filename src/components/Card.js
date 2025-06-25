@@ -2,19 +2,16 @@ import styled from 'styled-components';
 import { ReactComponent as Male } from '../assets/genders/male.svg';
 import { ReactComponent as Female } from '../assets/genders/female.svg';
 import { ReactComponent as Genderless } from '../assets/genders/genderless.svg';
+import { useCallback } from 'react';
 
-// TODO: Refactor the Card component
-export function Card({
-  status,
-  name,
-  species,
-  type,
-  gender,
-  image,
-  onClickHandler
-}) {
+export function Card(props) {
+  const { status, name, species, type, gender, image, onClickHandler } = props;
+  const handleClick = useCallback(() => {
+    onClickHandler(props);
+  }, [onClickHandler, props]);
+
   return (
-    <StyledCard onClick={onClickHandler}>
+    <StyledCard onClick={handleClick}>
       <CardImg src={image} alt={name} />
 
       <CardInfo>
@@ -26,24 +23,17 @@ export function Card({
   );
 }
 
+const iconsMap = {
+  Male: <Male width={20} height={20} fill="#33b3c8" title="Male" />,
+  Female: <Female width={24} height={24} fill="pink" title="Female" />,
+  Genderless: (
+    <Genderless width={24} height={24} fill="#999" title="Genderless" />
+  ),
+  unknown: <Genderless width={24} height={24} fill="#999" title="Genderless" />
+};
+
 export function CardTitle({ name, gender, className }) {
-  const Icon = (() => {
-    if (gender === 'Male') {
-      return <Male width={20} height={20} fill="#33b3c8" title="Male" />;
-    }
-
-    if (gender === 'Female') {
-      return <Female width={24} height={24} fill="pink" title="Female" />;
-    }
-
-    if (gender === 'unknown' || gender === 'Genderless') {
-      return (
-        <Genderless width={24} height={24} fill="#999" title="Genderless" />
-      );
-    }
-
-    return null;
-  })();
+  const Icon = iconsMap[gender] ?? null;
 
   return (
     <CardTitleContainer className={className}>

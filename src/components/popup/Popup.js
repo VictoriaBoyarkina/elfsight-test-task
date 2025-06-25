@@ -2,6 +2,10 @@ import styled, { css } from 'styled-components';
 import { PopupEpisodes } from './PopupEpisodes';
 import { PopupHeader } from './PopupHeader';
 import { PopupInfo } from './PopupInfo';
+import { useRef } from 'react';
+import { useClickOutside } from '../../hooks/useClickOutside';
+import { useCallback } from 'react';
+import { useEscapeKey } from '../../hooks/useEscapeKey';
 
 export function Popup({ settings: { visible, content = {} }, setSettings }) {
   const {
@@ -16,21 +20,22 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     episode: episodes
   } = content;
 
-  function togglePopup(e) {
-    if (e.currentTarget !== e.target) {
-      return;
-    }
+  const containerRef = useRef();
 
-    setSettings((prevState) => ({
-      ...prevState,
-      visible: !prevState.visible
-    }));
-  }
+  const closePopup = useCallback(() => {
+    setSettings({
+      content: {},
+      visible: false
+    });
+  }, [setSettings]);
+
+  useClickOutside(containerRef, closePopup);
+  useEscapeKey(closePopup);
 
   return (
     <PopupContainer visible={visible}>
-      <StyledPopup>
-        <CloseIcon onClick={togglePopup} />
+      <StyledPopup ref={containerRef}>
+        <CloseIcon onClick={closePopup} />
 
         <PopupHeader
           name={name}
