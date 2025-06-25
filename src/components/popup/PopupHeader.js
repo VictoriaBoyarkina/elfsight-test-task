@@ -1,10 +1,12 @@
 import styled from 'styled-components';
-import { CardStatus, CardTitle } from '../Card';
+import { CardStatus } from '../card/CardStatus';
+import { CardTitle } from '../card/CardTitle';
+import { PopupImage } from './PopupImage';
 
 export function PopupHeader({ image, name, gender, status, species, type }) {
   return (
     <PopupHeaderContainer>
-      <PopupImage src={image?.replace('../', '')} alt={name} />
+      <PopupImage image={image?.replace('../', '')} name={name} key={image} />
       <PopupTitle name={name} gender={gender} />
       <PopupStatus status={status} species={species} type={type} />
     </PopupHeaderContainer>
@@ -27,15 +29,4 @@ const PopupStatus = styled(CardStatus)`
     text-align: center;
     margin-top: 10px;
   }
-`;
-
-const PopupImage = styled.img`
-  display: block;
-  border-radius: 5px;
-  margin: 0 auto;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  max-width: 350px;
-  max-height: 350px;
 `;
