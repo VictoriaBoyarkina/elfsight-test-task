@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Pagination, ItemsGrid, useData, Header, AppState } from './components';
 
-export default function App() {
+export function App() {
   const { isFetching, isError } = useData();
 
   return (
@@ -11,11 +11,11 @@ export default function App() {
       <AppState />
 
       {!isFetching && !isError && (
-        <>
+        <Content>
           <ItemsGrid />
 
           <Pagination />
-        </>
+        </Content>
       )}
     </Main>
   );
@@ -41,4 +41,11 @@ const Main = styled.main`
   @media (max-width: 600px) {
     max-width: 90%;
   }
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-bottom: 20px;
 `;
