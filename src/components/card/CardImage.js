@@ -11,25 +11,30 @@ export function CardImage({ image, name }) {
   return (
     <ImageWrapper>
       {!loaded && <Placeholder />}
-      <CardImg src={image} alt={name} loading="lazy" onLoad={onLoad} />
+      <CardImg
+        src={image}
+        alt={name}
+        loading="lazy"
+        onLoad={onLoad}
+        style={{ opacity: loaded ? 1 : 0 }}
+      />
     </ImageWrapper>
   );
 }
 
 const ImageWrapper = styled.div`
-  height: 375px;
   position: relative;
+  aspect-ratio: 1 / 1; /* квадратное изображение */
+  width: 100%;
   overflow: hidden;
+  border-radius: 10px 10px 0 0;
 `;
 
 const Placeholder = styled.div`
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   background: #ccc;
   animation: pulse 1.5s infinite;
-  position: absolute;
-  top: 0;
-  left: 0;
   border-radius: 10px 10px 0 0;
   z-index: 1;
 
@@ -47,7 +52,11 @@ const Placeholder = styled.div`
 `;
 
 const CardImg = styled.img`
-  border-radius: 10px 10px 0 0;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+  border-radius: 10px 10px 0 0;
 `;
